@@ -133,7 +133,7 @@ _(input)
 
 Remember to pass through `stringifyObj` when you are encoding objects.
 
-```
+```javascript
 const input = {
 	a : _([
 			_([1, 2, 3]),
