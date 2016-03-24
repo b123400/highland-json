@@ -1,17 +1,15 @@
 "use strict";
 /* global require */
-const fs = require('fs');
-const gulp = require('gulp');
-const del = require('del');
-const babel = require('gulp-babel');
-// const ignore = require('gulp-ignore');
-const sourcemaps = require('gulp-sourcemaps');
-// const eslint = require('gulp-eslint');
+var fs = require('fs');
+var gulp = require('gulp');
+var del = require('del');
+var babel = require('gulp-babel');
+var sourcemaps = require('gulp-sourcemaps');
 
-gulp.task('clean', (cb) =>
+gulp.task('clean', function(cb) {
 	// You can use multiple globbing patterns as you would with `gulp.src`
-	del(['build', 'test/build'], cb)
-);
+	return del(['build', 'test/build'], cb)
+});
 
 // gulp.task('lint', ()=>
 // 	gulp.src("./src/**/*.js")
@@ -20,30 +18,30 @@ gulp.task('clean', (cb) =>
 // 	.pipe(eslint.failAfterError())
 // );
 
-gulp.task('build', ['clean'], () =>
+gulp.task('build', ['clean'], function() {
 	// Minify and copy all JavaScript
 	// with sourcemaps all the way down
-	gulp.src("./src/**/*.js")
-	.pipe(sourcemaps.init())
-	.pipe(babel({
-		presets: ['es2015'],
-		compact: false
-	}))
-	.pipe(sourcemaps.write())
-	.pipe(gulp.dest('lib/'))
-);
+	return gulp.src("./src/**/*.js")
+		.pipe(sourcemaps.init())
+		.pipe(babel({
+			presets: ['es2015'],
+			compact: false
+		}))
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest('lib/'));
+});
 
-gulp.task('build-test', ['clean'], () =>
+gulp.task('build-test', ['clean'], function() {
 	// Minify and copy all JavaScript
 	// with sourcemaps all the way down
-	gulp.src("./test/index.js")
-	.pipe(sourcemaps.init())
-	.pipe(babel({
-		presets: ['es2015']
-	}))
-	.pipe(sourcemaps.write())
-	.pipe(gulp.dest('test-build/'))
-);
+	return gulp.src("./test/index.js")
+		.pipe(sourcemaps.init())
+		.pipe(babel({
+			presets: ['es2015']
+		}))
+		.pipe(sourcemaps.write())
+		.pipe(gulp.dest('test-build/'));
+});
 
 // The default task (called when you run `gulp` from cli)
 gulp.task('default', ['build','build-test']);
