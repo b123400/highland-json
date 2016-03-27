@@ -77,13 +77,13 @@ export const objectToStream = obj =>
 
 const patchStream = stream => {
 	const methods = ['doto', 'errors', 'tap', 'throttle', 'fork', 'stopOnError'];
-	for (let key of methods) {
+	methods.forEach(key => {
 		const original = stream[key];
 		stream[key] = function() {
 			const result = original.apply(this, arguments);
 			result.__isJSON = true;
 			return patchStream(result);
 		}
-	}
+	})
 	return stream;
 }
