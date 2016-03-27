@@ -26,7 +26,7 @@ export const stringify = stream => {
 		}))
 		.append(']');
 	s.__isJSON = true;
-	return s;
+	return patchStream(s);
 };
 
 export const stringifyObj = stream => {
@@ -65,8 +65,25 @@ export const stringifyObj = stream => {
 		)
 		.append('}');
 	s.__isJSON = true;
-	return s;
+	return patchStream(s);
 }
 
 export const objectToStream = obj =>
 	_(Object.keys(obj)).map(key => [key, obj[key]])
+
+/**
+ * Path common functions such the __isJSON property is retained
+ */
+
+const patchStream = stream => {
+	const methods = ['doto', 'errors', 'tap', 'throttle', 'fork', 'stopOnError'];
+	for (let key of methods) {
+		const original = stream[key];
+		stream[key] = function() {
+			const result = original.apply(this, arguments);
+			result.__isJSON = true;
+			return patchStream(result);
+		}
+	}
+	return stream;
+}

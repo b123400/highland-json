@@ -17,7 +17,6 @@ export const testEncodeArray = test => {
 	_(input)
 	.through(stringify)
 	.toArray(results => {
-		console.log(results.join(''))
 		let result = results.join('');
 		result = JSON.parse(result);
 		test.deepEqual(result, input);
