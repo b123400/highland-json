@@ -29,6 +29,6 @@
     "del": "^2.2.0"
   },
   "dependencies": {
-    "highland": "^2.7.1"
+    "highland": "^2.10.1"
   }
 }
