@@ -1,4 +1,6 @@
 # Highland-json
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/b123400/highland-json.svg)](https://greenkeeper.io/)
 JSON encoding for [Highland.js](http://highlandjs.org) stream.
 
 ![Build Status](https://travis-ci.org/b123400/highland-json.svg?branch=master)
