@@ -29,6 +29,6 @@
     "del": "^3.0.0"
   },
   "peerDependencies": {
-    "highland": "^2.12.0"
+    "highland": "^2.13.0"
   }
 }
