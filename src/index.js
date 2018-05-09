@@ -76,7 +76,7 @@ export const objectToStream = obj =>
  */
 
 const patchStream = stream => {
-	const methods = ['doto', 'errors', 'tap', 'throttle', 'fork', 'stopOnError'];
+	const methods = ['doto', 'errors', 'tap', 'throttle', 'fork', 'stopOnError', 'consume', 'observe'];
 	methods.forEach(key => {
 		const original = stream[key];
 		stream[key] = function() {
