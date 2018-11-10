@@ -75,7 +75,7 @@ export const objectToStream = obj =>
  * Path common functions such the __isJSON property is retained
  */
 
-const patchStream = stream => {
+export const patchStream = stream => {
 	const methods = ['doto', 'errors', 'tap', 'throttle', 'fork', 'stopOnError', 'consume', 'observe'];
 	methods.forEach(key => {
 		const original = stream[key];
