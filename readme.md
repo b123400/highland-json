@@ -165,7 +165,54 @@ _([input])
 			c : {d:'e', f:'g'},
 			h : {i:'j', k:'l'}
 		}
+	} */
+});
+```
+
+### Custom stringify
+
+In case if you want to use a custom stringify function.
+
+```javascript
+import _ from 'highland';
+import {stringify} from 'highland-json';
+
+const input = ['a', 'b', 'c'];
+const customStringify = (val, stream)=> JSON.stringify(val + '1');
+
+_(input)
+.through(stringify({stringify: customStringify}))
+.toArray(results => {
+	let result = results.join('');
+	// result === ['a1', 'b1', 'c1']
+});
+```
+
+```javascript
+const input = {
+	nums: _([1, 2, 3]),
+	strings: _(['a', 'b', 'c']),
+};
+
+const customStringify = (val, stream)=> {
+	if (stream === input.nums) {
+		return JSON.stringify(val * 10);
 	}
-*/
+	if (stream === input.strings) {
+		return JSON.stringify(val + '1');
+	}
+	throw new Error("Unreachable");
+};
+
+_([input])
+.through(stringifyObj({stringify: customStringify}))
+.toArray(results => {
+	const result = JSON.parse(results.join(''));
+	/*
+	result === {
+		nums: [10, 20, 30],
+		strings: ['a1', 'b1', 'c1'],
+	};
+	*/
 });
 ```
