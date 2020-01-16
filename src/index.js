@@ -2,7 +2,14 @@
 
 import _ from 'highland';
 
-export const stringify = stream => {
+export const stringify = options => {
+	if (_.isStream(options)) {
+		return stringifyWithOptions(options);
+	};
+	return stream => stringifyWithOptions(stream, options);
+}
+
+export const stringifyWithOptions = (stream, options) => {
 	let isFirst = true;
 	const s = _(['['])
 		.concat(stream.flatMap(obj=> {
@@ -16,12 +23,16 @@ export const stringify = stream => {
 				if (obj.__isJSON) {
 					return _([prefix]).concat(obj);
 				}
-				return _([prefix]).concat(stringify(obj));
+				return _([prefix]).concat(stringifyWithOptions(obj, options));
 			}
 			if (stream.__isJSON) {
 				return _([prefix, obj]);
 			}
-			let jsonString = JSON.stringify(obj);
+
+			let jsonString = 
+				options && typeof options.stringify === 'function'
+				? options.stringify(obj, stream)
+				: JSON.stringify(obj);
 			return _([prefix, jsonString]);
 		}))
 		.append(']');
@@ -29,7 +40,14 @@ export const stringify = stream => {
 	return patchStream(s);
 };
 
-export const stringifyObj = stream => {
+export const stringifyObj = options => {
+	if (_.isStream(options)) {
+		return stringifyObjWithOptions(options);
+	};
+	return stream => stringifyObjWithOptions(stream, options);
+}
+
+export const stringifyObjWithOptions = (stream, options) => {
 	let isFirst = true;
 	const s = _(['{'])
 		.concat(stream
@@ -57,9 +75,14 @@ export const stringifyObj = stream => {
 					if (obj[1].__isJSON) {
 						return _([text]).concat(obj[1]);
 					}
-					return _([text]).concat(stringify(obj[1]));
+					return _([text]).concat(stringifyWithOptions(obj[1], options));
 				}
-				let jsonString = stream.__isJSON ? obj : JSON.stringify(obj[1]);
+				let jsonString =
+					stream.__isJSON
+					? obj
+					: options && typeof options.stringify === 'function'
+					? options.stringify(obj[1], stream)
+					: JSON.stringify(obj[1]);
 				return _([text, jsonString]);
 			})
 		)
