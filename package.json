@@ -31,5 +31,6 @@
   },
   "peerDependencies": {
     "highland": "^2.13.0"
-  }
+  },
+  "typings": "./types.d.ts"
 }
